@@ -18,7 +18,7 @@
   $count = 0;
   $freshness = "";
   $freshAlt = "";
-
+  $printThis="";
   if (intval($info[2]) >= 60){
       $freshness = "freshbig.png";
       $freshAlt = "Fresh";
@@ -31,18 +31,19 @@
 
 function sidebar(){
   global $overview;
-
+  $strmy="";
   foreach ($overview as $row) {
       $row=explode(":",$row);
-      echo "<dt>{$row[0]}</dt><dd>{$row[1]}</dd>";
+      $strmy=$strmy. "<dt>{$row[0]}</dt><dd>{$row[1]}</dd>";
   }
+  return $strmy;
 }
 
 
 function getRev(){
   global $movie;
   global $count;
-
+  $strmy="";
   $raw_review = array();
   foreach (glob("$movie/review*.txt") as $filename) {
     $raw_review[$count]=file_get_contents("$filename");
@@ -50,15 +51,17 @@ function getRev(){
   }
   for ($i=0; $i<$count ; $i++) {
     $review=explode("\n",$raw_review[$i]);
-    displayReview($review,$i);
+    $strmy=$strmy. displayReview($review,$i);
   }
+  return $strmy;
 }
 
 function displayReview($review,$i){
   global $count;
+  $strmy="";
   $i++;
   $review[1]=strtolower($review[1]);
-  echo "
+  $strmy=$strmy. "
   <div class='reviewquote'>
   <img class='likeimg' src='images/{$review[1]}.gif' alt='{$review[1]}'>
   	&ldquo;{$review[0]}&rdquo; <br><br></div>
@@ -71,9 +74,10 @@ function displayReview($review,$i){
     {$review[3]}
     </div>";
   if($i==ceil($count/2)){
-    echo "</div>
+     $strmy=$strmy. "</div>
           <div class='reviewcol'>";
   }
+  return $strmy;
 }
 
      ?>
@@ -90,14 +94,14 @@ function displayReview($review,$i){
             <div id="Overview">
                 <img src="<?=$movie?>/overview.png" alt="overview">
                 <dl class="OverViewdl">
-                  <?php sidebar();?>
+                  <?=sidebar();?>
                 </dl>
             </div>
             <div id="reviews">
 
 
                 <div class="reviewcol">
-                    <?php getRev(); ?>
+                    <?=getRev(); ?>
                 </div>
             </div>
             <div id="bottombar">
