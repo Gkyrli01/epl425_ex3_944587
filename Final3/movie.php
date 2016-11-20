@@ -18,7 +18,6 @@
   $count = 0;
   $freshness = "";
   $freshAlt = "";
-  $printThis="";
   if (intval($info[2]) >= 60){
       $freshness = "freshbig.png";
       $freshAlt = "Fresh";
